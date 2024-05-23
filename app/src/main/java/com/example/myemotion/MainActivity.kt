@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.myemotion.db.database.EmDatabase
 
 class MainActivity : AppCompatActivity() {
     private lateinit var emozioneSpinner: Spinner
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-
+        val db = EmDatabase.getDatabase(this)
         // Configura i padding per i system bars
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         intensitaTextView = findViewById(R.id.intensitaTextView)
 
         // Configura lo Spinner con un elenco di emozioni
-        val emozioni = resources.getStringArray(R.array.emozioni_array)
+        val emozioni = db.emozioneDao().getEmozioniList()
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, emozioni)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         emozioneSpinner.adapter = adapter
