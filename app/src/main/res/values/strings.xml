@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name" translatable="false">MyEmotion</string>
+    <string name="emozione" translatable="false">Emozione</string>
+    <string name="intensit" translatable="false">Intensità</string>
+    <string name="note" translatable="false">Note</string>
+    <string name="inserisci_le_tue_note" translatable="false">Inserisci le tue note</string>
+    <string name="salva" translatable="false">Salva</string>
+    <string name="vedi_statistiche" translatable="false">Vedi Statistiche</string>
+    <string name="seleziona_un_emozione" translatable="false">Seleziona un\'emozione</string>
+    <string name="seleziona_l_intensit_da_1_a_10" translatable="false">Seleziona l\'intensità da 1 a 10</string>
+    <string name="salva_le_informazioni" translatable="false">Salva le informazioni</string>
+    <string name="visualizza_le_statistiche" translatable="false">Visualizza le statistiche</string>
+    <string name="intensita_valore" translatable="false">Intensità: %1$d</string>
+    <string-array name="emozioni_array">
+        <item>Felice</item>
+        <item>Triste</item>
+        <item>Arrabbiato</item>
+        <item>Ansioso</item>
+        <item>Sereno</item>
+        <item>Spaventato</item>
+    </string-array>
+</resources>
