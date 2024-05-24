@@ -10,6 +10,8 @@
     <string name="salva_le_informazioni" translatable="false">Salva le informazioni</string>
     <string name="visualizza_le_statistiche" translatable="false">Visualizza le statistiche</string>
     <string name="intensita_valore" translatable="false">Intensità: %1$d</string>
+    <string name="consiglio">Consiglio</string>
+    <string name="chiudi">Chiudi</string>
     <string-array name="emozioni_array">
         <item>Felice</item>
         <item>Triste</item>

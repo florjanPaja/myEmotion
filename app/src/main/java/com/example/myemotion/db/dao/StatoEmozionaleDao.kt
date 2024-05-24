@@ -1,15 +1,22 @@
 package com.example.myemotion.db.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
+import android.content.ContentValues
+import com.example.myemotion.db.database.EmotionDatabaseHelper
 import com.example.myemotion.db.entity.StatoEmozionale
 
-@Dao
-interface StatoEmozionaleDao {
-    @Insert
-    fun inserisciStatoEmozionale(statoEmozionale: StatoEmozionale)
+class StatoEmozionaleDao(dbHelper: EmotionDatabaseHelper) {
+    private val dbHelper: EmotionDatabaseHelper = dbHelper
 
-    @Query("SELECT * FROM stato_emozionale")
-    fun getStatiEmozionali(): List<StatoEmozionale>
+    fun inserisciStatoEmozionale(statoEmozionale: StatoEmozionale): Long {
+        val db = dbHelper.writableDatabase
+        val values = ContentValues().apply {
+            put("idEmozione", statoEmozionale.idEmozione)
+            put("nomeEmozione", statoEmozionale.nomeEmozione)
+            put("intensita", statoEmozionale.intensita)
+            put("nota", statoEmozionale.nota)
+        }
+        return db.insert("stato_emozionale", null, values)
+    }
+
+    // Aggiungi altre funzioni DAO per gli stati emozionali se necessario
 }
