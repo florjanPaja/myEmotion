@@ -1,4 +1,7 @@
 package com.example.myemotion
+
+
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -14,9 +17,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myemotion.db.database.EmotionDatabaseHelper
 import com.example.myemotion.db.database.SetOnStart
-import com.example.myemotion.db.entity.StatoEmozionale
 import com.example.myemotion.utils.AvvisiUtils
-import java.util.Date
 
 class MainActivity : AppCompatActivity() {
     private lateinit var emozioneSpinner: Spinner
@@ -82,14 +83,30 @@ class MainActivity : AppCompatActivity() {
         // Imposta il listener per il pulsante Salva
         salvaButton.setOnClickListener {
             if (emozioneSpinner.selectedItem != "") {
-            MainMetodi(dbHelper).saveStatoEmozionale(emozioneSpinner.selectedItem as String,emozioniMap[emozioneSpinner.selectedItem as String] ?: 0 , intensitaSeekBar.progress, noteEditText.text.toString())
-            MainMetodi(dbHelper).showConsiglio(this,emozioniMap[emozioneSpinner.selectedItem as String] ?: 0)
-            emozioneSpinner.setSelection(0) // Reimposta la selezione dello Spinner
-            intensitaSeekBar.progress = 1// Reimposta il progresso della SeekBar
-            noteEditText.text = null // Cancella il testo nell'EditText
-        }else{AvvisiUtils.showMessage(this,"NESSUNA EMOZIONE INSERITA")}}
-    }
+                MainMetodi(dbHelper).saveStatoEmozionale(
+                    emozioneSpinner.selectedItem as String,
+                    emozioniMap[emozioneSpinner.selectedItem as String] ?: 0,
+                    intensitaSeekBar.progress,
+                    noteEditText.text.toString()
+                )
+                MainMetodi(dbHelper).showConsiglio(
+                    this,
+                    emozioniMap[emozioneSpinner.selectedItem as String] ?: 0
+                )
+                emozioneSpinner.setSelection(0) // Reimposta la selezione dello Spinner
+                intensitaSeekBar.progress = 1// Reimposta il progresso della SeekBar
+                noteEditText.text = null // Cancella il testo nell'EditText
+            } else {
+                AvvisiUtils.showMessage(this, "NESSUNA EMOZIONE INSERITA")
+            }
+        }
 
+        statistichebutton.setOnClickListener {
+            val intent = Intent(this, StatisticheActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
 
 
     override fun onDestroy() {

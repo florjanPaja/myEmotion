@@ -1,6 +1,7 @@
 package com.example.myemotion.db.dao
 
 import android.content.ContentValues
+import android.database.Cursor
 import com.example.myemotion.db.database.EmotionDatabaseHelper
 import com.example.myemotion.db.entity.StatoEmozionale
 
@@ -18,5 +19,23 @@ class StatoEmozionaleDao(dbHelper: EmotionDatabaseHelper) {
         return db.insert("stato_emozionale", null, values)
     }
 
-    // Aggiungi altre funzioni DAO per gli stati emozionali se necessario
+    fun getStato(): Map<String, Int> {
+        val db = dbHelper.readableDatabase
+        val cursor: Cursor = db.rawQuery(
+            "SELECT nomeEmozione, COUNT(id) as numerovolteprovata FROM stato_emozionale",
+            null
+        )
+        val statoemozioni = mutableMapOf<String, Int>()
+
+        while (cursor.moveToNext()) {
+            val nome = cursor.getString(cursor.run { getColumnIndex("nomeEmozione") })
+            val numerovolteprovata =
+                cursor.getInt(cursor.run { getColumnIndex("numerovolteprovata") })
+
+            statoemozioni[nome] = numerovolteprovata
+        }
+
+        cursor.close()
+        return statoemozioni
+    }
 }

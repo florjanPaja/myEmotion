@@ -1,6 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <!-- Header con l'emozione più provata e la percentuale -->
+    <LinearLayout
+        android:id="@+id/testataLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <TextView
+            android:id="@+id/emozionePiuProvataTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emozione più provata"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/emozionePiuProvataPercentualeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <!-- Sezione con tutte le emozioni -->
+    <LinearLayout
+        android:id="@+id/tutteLeEmozioniLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/testataLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone">
+
+        <!-- Intestazione -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tutte le emozioni"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <!-- Lista di emozioni e percentuali -->
+        <LinearLayout
+            android:id="@+id/emozioniListLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+    </LinearLayout>
+
+    <!-- Sezione per filtrare il periodo -->
+    <RadioGroup
+        android:id="@+id/filtroRadioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintTop_toBottomOf="@id/tutteLeEmozioniLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Radio Buttons per i periodi -->
+        <RadioButton
+            android:id="@+id/settimanaRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Questa settimana"
+            android:layout_weight="1"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/meseRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Questo mese"
+            android:layout_weight="1"/>
+
+        <RadioButton
+            android:id="@+id/annoRadioButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Quest'anno"
+            android:layout_weight="1"/>
+    </RadioGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

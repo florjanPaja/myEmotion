@@ -3,10 +3,12 @@ package com.example.myemotion
 import android.app.Dialog
 import android.content.Context
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.example.myemotion.db.database.EmotionDatabaseHelper
 import com.example.myemotion.db.entity.StatoEmozionale
 import com.example.myemotion.utils.AvvisiUtils
@@ -27,11 +29,14 @@ class MainMetodi(dbHelper: EmotionDatabaseHelper) {
 
         dbHelper.getStatoEmozionaleDao().inserisciStatoEmozionale(statoEmozionale)
     }
+
     fun showConsiglio(context: Context, idEmozione: Int) {
         val consiglio = dbHelper.getConsiglioDao().showConsiglio(idEmozione)
 
         AvvisiUtils.showMessage(context, consiglio)
     }
+
+
 
 
 }
