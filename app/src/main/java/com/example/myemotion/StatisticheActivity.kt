@@ -32,6 +32,12 @@ class StatisticheActivity : AppCompatActivity() {
         emozionePiuProvataTextView = findViewById(R.id.emozionePiuProvataTextView)
         statoEmozionaleTable = findViewById(R.id.statoEmozionaleTable)
 
+        emozionePiuProvataTextView.text =
+            buildString {
+                append(emozionePiuProvataTextView.text.toString())
+                append(dbHelper.getStatoEmozionaleDao().getStatoMaggiore())
+            }
+
         // Listener per il RadioGroup
         filtroRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
