@@ -42,7 +42,7 @@
             android:id="@+id/settimanaRadioButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Questa settimana"
+            android:text="SETTIMANA"
             android:layout_weight="1"
             android:checked="true"/>
 
@@ -50,14 +50,14 @@
             android:id="@+id/meseRadioButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Questo mese"
+            android:text="MESE"
             android:layout_weight="1"/>
 
         <RadioButton
             android:id="@+id/annoRadioButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Quest'anno"
+            android:text="ANNO"
             android:layout_weight="1"/>
     </RadioGroup>
 

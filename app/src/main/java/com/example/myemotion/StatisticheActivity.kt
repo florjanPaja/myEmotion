@@ -42,21 +42,21 @@ class StatisticheActivity : AppCompatActivity() {
         filtroRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.settimanaRadioButton -> {
-                    val listByWeek: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoWEEK()
+                    val listByWeek: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoEmozionale("SETTIMANA")
                     updateTableView(listByWeek)
                 }
 
                 R.id.meseRadioButton -> {
-                    val listByMonth: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoMONTH()
+                    val listByMonth: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoEmozionale("MESE")
                     updateTableView(listByMonth)
                 }
 
                 R.id.annoRadioButton -> {
-                    val listByYear: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoYEAR()
+                    val listByYear: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoEmozionale("ANNO")
                     updateTableView(listByYear)
                 }
             }
-        }
+       }
     }
 
     private fun updateTableView(data: Map<String, Int>) {
@@ -90,4 +90,5 @@ class StatisticheActivity : AppCompatActivity() {
             statoEmozionaleTable.addView(row)
         }
     }
+
 }
