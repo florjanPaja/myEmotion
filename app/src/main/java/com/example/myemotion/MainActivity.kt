@@ -83,13 +83,13 @@ class MainActivity : AppCompatActivity() {
         // Imposta il listener per il pulsante Salva
         salvaButton.setOnClickListener {
             if (emozioneSpinner.selectedItem != "") {
-                MainMetodi(dbHelper).saveStatoEmozionale(
+                Metodi(dbHelper).saveStatoEmozionale(
                     emozioneSpinner.selectedItem as String,
                     emozioniMap[emozioneSpinner.selectedItem as String] ?: 0,
                     intensitaSeekBar.progress,
                     noteEditText.text.toString()
                 )
-                MainMetodi(dbHelper).showConsiglio(
+                Metodi(dbHelper).showConsiglio(
                     this,
                     emozioniMap[emozioneSpinner.selectedItem as String] ?: 0
                 )

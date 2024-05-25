@@ -1,20 +1,12 @@
 package com.example.myemotion
 
-import android.app.Dialog
 import android.content.Context
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import android.view.Window
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import com.example.myemotion.db.database.EmotionDatabaseHelper
 import com.example.myemotion.db.entity.StatoEmozionale
 import com.example.myemotion.utils.AvvisiUtils
 import java.util.Date
 
-class MainMetodi(dbHelper: EmotionDatabaseHelper) {
+class Metodi(dbHelper: EmotionDatabaseHelper) {
     private val dbHelper: EmotionDatabaseHelper = dbHelper
     fun saveStatoEmozionale(selectedNome: String, selectedId: Int, intensita: Int, nota: String) {
         val data = Date()

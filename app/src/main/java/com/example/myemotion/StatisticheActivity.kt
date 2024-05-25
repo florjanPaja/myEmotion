@@ -1,53 +1,87 @@
-package com.example.myemotion;
+package com.example.myemotion
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myemotion.R
 import com.example.myemotion.db.database.EmotionDatabaseHelper
 
 class StatisticheActivity : AppCompatActivity() {
 
     private lateinit var testataLayout: LinearLayout
-    private lateinit var tutteLeEmozioniLayout: LinearLayout
     private lateinit var filtroRadioGroup: RadioGroup
     private lateinit var settimanaRadioButton: RadioButton
     private lateinit var meseRadioButton: RadioButton
     private lateinit var annoRadioButton: RadioButton
     private lateinit var emozionePiuProvataTextView: TextView
-    private lateinit var emozionePiuProvataPercentualeTextView: TextView
     private lateinit var dbHelper: EmotionDatabaseHelper
+    private lateinit var statoEmozionaleTable: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.statistiche)
         dbHelper = EmotionDatabaseHelper(this)
+
         // Inizializzazione dei componenti
         testataLayout = findViewById(R.id.testataLayout)
-        tutteLeEmozioniLayout = findViewById(R.id.tutteLeEmozioniLayout)
         filtroRadioGroup = findViewById(R.id.filtroRadioGroup)
         settimanaRadioButton = findViewById(R.id.settimanaRadioButton)
         meseRadioButton = findViewById(R.id.meseRadioButton)
         annoRadioButton = findViewById(R.id.annoRadioButton)
         emozionePiuProvataTextView = findViewById(R.id.emozionePiuProvataTextView)
-        emozionePiuProvataPercentualeTextView = findViewById(R.id.emozionePiuProvataPercentualeTextView)
+        statoEmozionaleTable = findViewById(R.id.statoEmozionaleTable)
 
-        // Codice aggiuntivo per gestire il RadioGroup
-        filtroRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            // Logica per gestire la selezione del RadioGroup
+        // Listener per il RadioGroup
+        filtroRadioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.settimanaRadioButton -> {
-                    // Logica per la selezione della settimana
+                    val listByWeek: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoWEEK()
+                    updateTableView(listByWeek)
                 }
+
                 R.id.meseRadioButton -> {
-                    // Logica per la selezione del mese
+                    val listByMonth: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoMONTH()
+                    updateTableView(listByMonth)
                 }
+
                 R.id.annoRadioButton -> {
-                    // Logica per la selezione dell'anno
+                    val listByYear: Map<String, Int> = dbHelper.getStatoEmozionaleDao().getStatoYEAR()
+                    updateTableView(listByYear)
                 }
             }
+        }
+    }
+
+    private fun updateTableView(data: Map<String, Int>) {
+        statoEmozionaleTable.removeAllViews()
+        for ((key, value) in data) {
+            val row = LinearLayout(this)
+            row.layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            row.orientation = LinearLayout.HORIZONTAL
+
+            val emotionTextView = TextView(this)
+            emotionTextView.text = key
+            emotionTextView.layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+
+            val countTextView = TextView(this)
+            countTextView.text = value.toString()
+            countTextView.layoutParams = LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1f
+            )
+
+            row.addView(emotionTextView)
+            row.addView(countTextView)
+            statoEmozionaleTable.addView(row)
         }
     }
 }
