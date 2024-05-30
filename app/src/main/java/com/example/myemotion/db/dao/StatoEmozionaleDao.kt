@@ -4,8 +4,9 @@ import android.content.ContentValues
 import android.database.Cursor
 import com.example.myemotion.db.database.EmotionDatabaseHelper
 import com.example.myemotion.db.entity.StatoEmozionale
-import java.util.*
-import java.text.SimpleDateFormat
+import com.example.myemotion.xgestioneemozioni.EmozioneStatistica
+import java.util.Calendar
+import java.util.Date
 
 
 class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
@@ -43,11 +44,11 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
     }
 
 
-    fun getStatoEmozionale(periodo: String): Map<String, Int> {
+    fun getStatoEmozionale(periodo: String): List<EmozioneStatistica> {
         val db = dbHelper.readableDatabase
         // Query to get all data without date filtering
         val cursor: Cursor = db.rawQuery(
-            "SELECT nomeEmozione, data " +
+            "SELECT nomeEmozione, intensita, data " +
                     "FROM stato_emozionale",
             null
         )
@@ -56,10 +57,10 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
         return result
     }
 
-
-    private fun ottieniMappaDaCursor(cursor: Cursor, periodo: String): Map<String, Int> {
-        // Crea una mappa mutabile per memorizzare i conteggi delle emozioni
-        val statoemozioni = mutableMapOf<String, Int>()
+    private fun ottieniMappaDaCursor(cursor: Cursor, periodo: String): List<EmozioneStatistica> {
+        // Crea una mappa mutabile per memorizzare le somme delle intensità e i conteggi delle emozioni
+        val intensitaEmozioni = mutableMapOf<String, Int>()
+        val conteggioEmozioni = mutableMapOf<String, Int>()
 
         // Ottieni le informazioni sulla data corrente
         val calendar = Calendar.getInstance()
@@ -71,6 +72,7 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
         while (cursor.moveToNext()) {
             val nome = cursor.getString(cursor.getColumnIndexOrThrow("nomeEmozione"))
             val data = cursor.getLong(cursor.getColumnIndexOrThrow("data"))
+            val intensita = cursor.getInt(cursor.getColumnIndexOrThrow("intensita"))
 
             // Converti il timestamp in un oggetto Date
             val date = Date(data)
@@ -80,30 +82,51 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
             val year = dateCalendar.get(Calendar.YEAR)
             val week = dateCalendar.get(Calendar.WEEK_OF_YEAR)
 
-            // Controlla il periodo e incrementa il conteggio dell'emozione se soddisfa i criteri
+            // Controlla il periodo e incrementa i conteggi e le somme delle intensità se soddisfa i criteri
             when (periodo) {
                 "SETTIMANA" -> {
                     if (week == currentWeek && year == currentYear) {
-                        statoemozioni[nome] = statoemozioni.getOrDefault(nome, 0) + 1
+                        intensitaEmozioni[nome] =
+                            intensitaEmozioni.getOrDefault(nome, 0) + intensita
+                        conteggioEmozioni[nome] = conteggioEmozioni.getOrDefault(nome, 0) + 1
                     }
                 }
 
                 "MESE" -> {
                     if (month == currentMonth && year == currentYear) {
-                        statoemozioni[nome] = statoemozioni.getOrDefault(nome, 0) + 1
+                        intensitaEmozioni[nome] =
+                            intensitaEmozioni.getOrDefault(nome, 0) + intensita
+                        conteggioEmozioni[nome] = conteggioEmozioni.getOrDefault(nome, 0) + 1
                     }
                 }
 
                 "ANNO" -> {
                     if (year == currentYear) {
-                        statoemozioni[nome] = statoemozioni.getOrDefault(nome, 0) + 1
+                        intensitaEmozioni[nome] =
+                            intensitaEmozioni.getOrDefault(nome, 0) + intensita
+                        conteggioEmozioni[nome] = conteggioEmozioni.getOrDefault(nome, 0) + 1
                     }
                 }
             }
         }
 
         cursor.close()
-        return statoemozioni
+
+        // Crea una lista di EmozioneStatistica calcolando la media delle intensità
+        val risultato = mutableListOf<EmozioneStatistica>()
+        for (emozione in intensitaEmozioni.keys) {
+            val mediaIntensita =
+                intensitaEmozioni[emozione]!!.toDouble() / conteggioEmozioni[emozione]!!
+            risultato.add(
+                EmozioneStatistica(
+                    emozione,
+                    mediaIntensita,
+                    conteggioEmozioni[emozione]!!
+                )
+            )
+        }
+
+        return risultato
     }
 
 
