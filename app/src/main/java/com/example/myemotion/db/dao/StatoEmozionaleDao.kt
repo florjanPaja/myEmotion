@@ -8,9 +8,20 @@ import com.example.myemotion.xgestioneemozioni.EmozioneStatistica
 import java.util.Calendar
 import java.util.Date
 
-
+/**
+ * La classe StatoEmozionaleDao gestisce le operazioni di accesso e manipolazione dei dati nella tabella dello stato emozionale del database.
+ * Fornisce metodi per inserire nuovi record di stato emozionale e per recuperare le statistiche delle emozioni.
+ *
+ * @property dbHelper L'oggetto EmotionDatabaseHelper utilizzato per accedere al database.
+ */
 class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
 
+    /**
+     * Inserisce un nuovo record di stato emozionale nella tabella.
+     *
+     * @param statoEmozionale L'oggetto StatoEmozionale da inserire.
+     * @return L'ID della riga inserita nel database.
+     */
     fun inserisciStatoEmozionale(statoEmozionale: StatoEmozionale): Long {
         val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
@@ -18,11 +29,16 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
             put("nomeEmozione", statoEmozionale.nomeEmozione)
             put("intensita", statoEmozionale.intensita)
             put("nota", statoEmozionale.nota)
-            put("data", Date().time)
+            put("data", Date().time) // Inserisce la data corrente come timestamp
         }
         return db.insert("stato_emozionale", null, values)
     }
 
+    /**
+     * Recupera il nome dell'emozione che è stata provata il maggior numero di volte.
+     *
+     * @return Il nome dell'emozione più frequentemente provata.
+     */
     fun getStatoMaggiore(): String {
         val db = dbHelper.readableDatabase
         val cursor: Cursor = db.rawQuery(
@@ -39,24 +55,36 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
             nome = cursor.getString(cursor.run { getColumnIndex("nomeEmozione") })
         }
 
-        cursor.close()
+        cursor.close() // Chiude il cursore
         return nome
     }
 
-
+    /**
+     * Recupera lo stato emozionale basato su un periodo specificato e restituisce una lista di statistiche delle emozioni.
+     *
+     * @param periodo Il periodo di tempo da considerare: "SETTIMANA", "MESE" o "ANNO".
+     * @return Una lista di EmozioneStatistica contenente le statistiche per ogni emozione.
+     */
     fun getStatoEmozionale(periodo: String): List<EmozioneStatistica> {
         val db = dbHelper.readableDatabase
-        // Query to get all data without date filtering
+        // Esegue una query per ottenere tutti i dati senza filtro sulla data
         val cursor: Cursor = db.rawQuery(
             "SELECT nomeEmozione, intensita, data " +
                     "FROM stato_emozionale",
             null
         )
         val result = ottieniMappaDaCursor(cursor, periodo)
-        cursor.close()
+        cursor.close() // Chiude il cursore
         return result
     }
 
+    /**
+     * Estrae i dati dal cursore e calcola le statistiche delle emozioni basate sul periodo specificato.
+     *
+     * @param cursor Il cursore contenente i dati dello stato emozionale.
+     * @param periodo Il periodo di tempo da considerare: "SETTIMANA", "MESE" o "ANNO".
+     * @return Una lista di EmozioneStatistica contenente le statistiche per ogni emozione.
+     */
     private fun ottieniMappaDaCursor(cursor: Cursor, periodo: String): List<EmozioneStatistica> {
         // Crea una mappa mutabile per memorizzare le somme delle intensità e i conteggi delle emozioni
         val intensitaEmozioni = mutableMapOf<String, Int>()
@@ -110,8 +138,6 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
             }
         }
 
-        cursor.close()
-
         // Crea una lista di EmozioneStatistica calcolando la media delle intensità
         val risultato = mutableListOf<EmozioneStatistica>()
         for (emozione in intensitaEmozioni.keys) {
@@ -126,8 +152,6 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
             )
         }
 
-        return risultato
+        return risultato // Restituisce la lista di statistiche delle emozioni
     }
-
-
 }

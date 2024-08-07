@@ -39,9 +39,11 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation("com.squareup.okhttp3:okhttp:4.9.2")
-    implementation ("com.google.code.gson:gson:2.8.8")
+    implementation(libs.okhttp)
+    implementation (libs.gson)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation(libs.json)
+
 }
