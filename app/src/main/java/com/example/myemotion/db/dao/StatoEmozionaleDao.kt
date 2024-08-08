@@ -154,4 +154,5 @@ class StatoEmozionaleDao(private val dbHelper: EmotionDatabaseHelper) {
 
         return risultato // Restituisce la lista di statistiche delle emozioni
     }
+
 }
