@@ -44,15 +44,7 @@ class StatoEmozionaleList(data: List<EmozioneStatistica>) {
         return position.toLong()
     }
 
-    /**
-     * Restituisce la chiave (nome dell'emozione) alla posizione specificata.
-     *
-     * @param position La posizione della chiave da restituire.
-     * @return La chiave alla posizione specificata.
-     */
-    fun getItemKey(position: Int): String {
-        return keys[position]
-    }
+
 
     /**
      * Restituisce il valore pesato alla posizione specificata.
@@ -65,9 +57,6 @@ class StatoEmozionaleList(data: List<EmozioneStatistica>) {
     }
 
     /**
-     * Restituisce la chiave (nome dell'emozione) alla posizione specificata.
-     * Questo metodo è duplicato di getItemKey().
-     *
      * @param position La posizione della chiave da restituire.
      * @return La chiave alla posizione specificata.
      */
